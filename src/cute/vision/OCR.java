@@ -8,9 +8,9 @@ import org.apache.log4j.BasicConfigurator;
 
 public class OCR {
     
-    private File image;
-    private Tesseract1 tess;
-    private String result;
+    private File image;                                                         //image that ocr will be performed on
+    private Tesseract1 tess;                                                    //tesseract object that performs ocr
+    private String result;                                                      //result of ocr process
     
     public OCR(){
         image = null;
@@ -20,7 +20,7 @@ public class OCR {
         result = null;
     }
     
-    public OCR(String imagePath){
+    public OCR(String imagePath){                                               //overloaded constructor
         image = new File(imagePath);
         tess = new Tesseract1();
         tess.setDatapath("external\\tesseract\\tessdata");
@@ -28,16 +28,16 @@ public class OCR {
         result = null;
     }
     
-    public boolean setImage(String imagePath){
+    public boolean setImage(String imagePath){                                  //set image for ocr to be performed on
         image = new File(imagePath);
         return image.canRead();
     }
     
-    public File getImage(){
+    public File getImage(){                                                     //see what image is in OCR object
         return image;
     }
     
-    public boolean run(){
+    public boolean run(){                                                       //run the ocr process on the image
         try{
             result = tess.doOCR(image);
             return true;
@@ -48,7 +48,7 @@ public class OCR {
         }
     }
     
-    public String getResult(){
+    public String getResult(){                                                  //get the results of ocr process
         return result;
     }
     
