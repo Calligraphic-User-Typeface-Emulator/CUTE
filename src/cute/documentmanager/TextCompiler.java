@@ -11,6 +11,7 @@ import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
+Import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -50,7 +51,7 @@ public class TextCompiler {
     public void writeFile(String filePath, ArrayList<BufferedImage> images) {
 
         try {
-            writer = new BufferedWriter(new FileWriter(filePath));
+            writer = new BufferedWriter(new FileWriter(new File(filePath)));
         } catch (IOException ex) {
             Logger.getLogger(TextCompiler.class.getName()).log(Level.SEVERE, null, ex);
         }
