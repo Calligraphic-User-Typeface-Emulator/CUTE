@@ -7,8 +7,13 @@
 package cute.imagemanager;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 
 /**
  *
@@ -18,6 +23,19 @@ import java.util.Map;
 //contains tools and methods to work with images
 public class ImageManager {
     
+    
+    public ArrayList<BufferedImage> read(ArrayList<String> fileNames){
+        ArrayList<BufferedImage> images = new ArrayList<>();
+        for(int i =0; i < fileNames.size(); i ++){
+            try {
+                images.add(ImageIO.read(new File(fileNames.get(i))));
+            } catch (IOException ex) {
+                Logger.getLogger(ImageManager.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        return images;
+    }
     
     //remove background of big image
     public void removeBackground(ArrayList<BufferedImage> images){
