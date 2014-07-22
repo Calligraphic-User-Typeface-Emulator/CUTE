@@ -26,7 +26,8 @@ import java.util.logging.Logger;
 public class TextCompiler {
 
     public static int numVariations = 1;
-    
+    public static Scanner scanner = new Scanner(System.in);
+
     //placeholder constructor
     public TextCompiler() {
 
@@ -34,7 +35,7 @@ public class TextCompiler {
 
     //takes in filepaths for sample handwriting 
     public ArrayList<String> initialize() {
-        Scanner scanner = new Scanner(System.in);
+
         ArrayList<String> filePaths = new ArrayList<>();
         boolean more = true;
         System.out.println("Enter a file path");
@@ -51,17 +52,17 @@ public class TextCompiler {
         }
         return filePaths;
     }
-    
+
     //gets filepaths for the document that needs to be "edited" and the filepath where the user wants the file
     public ArrayList<String> askFilePaths() {
-        Scanner scanner = new Scanner(System.in);
+
         ArrayList<String> filePaths = new ArrayList<>();
-        
+
         System.out.print("Filepath for document: ");
         filePaths.add(scanner.nextLine());
         System.out.print("Filepath for finished image: "); //may have to use println
         filePaths.add(scanner.nextLine());
-        
+
         //first element is for the document that needs to be edited
         //second element is for the finished image
         return filePaths;
@@ -83,7 +84,7 @@ public class TextCompiler {
     }
 
     //writes the images into a specified file
-    public boolean writeFile(String filePath, ArrayList<BufferedImage> images) {
+    public boolean writeFile(String filePath, String font, ArrayList<BufferedImage> images) {
 
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File(filePath)))) {
 
@@ -95,11 +96,19 @@ public class TextCompiler {
         //write to file here
         return true;
     }
-    
+
+    public String chooseFont() {
+
+        System.out.println("Choose your font: Pen or Pencil");
+
+        return scanner.nextLine();
+    }
+
     //comprehensive method 
-    public boolean write(){
+    public boolean write() {
         ArrayList<String> filePaths = askFilePaths();
-        return writeFile(filePaths.get(1), processFile(filePaths.get(0)));
+        String font = chooseFont();
+        return writeFile(filePaths.get(1), font, processFile(filePaths.get(0)));
     }
 
 }
