@@ -25,7 +25,7 @@ import java.util.logging.Logger;
 //contains tools and methods to read/write to text file
 public class TextCompiler {
 
-    public static int numVariations = 1;
+    public static int numVariations = 0;
     public static Scanner scanner = new Scanner(System.in);
 
     //placeholder constructor
@@ -37,12 +37,12 @@ public class TextCompiler {
     public ArrayList<String> initialize() {
 
         ArrayList<String> filePaths = new ArrayList<>();
-        boolean more = true;
-        System.out.println("Enter a file path");
+        System.out.print("Enter a file path: ");
         filePaths.add(scanner.nextLine());
-        while (more) {
+        numVariations++;
+        while (true) {
             String s;
-            System.out.println("Enter another file path or type \"@done\" to end input");
+            System.out.print("Enter another file path or type \"@done\" to end input: ");
             if ((s = scanner.nextLine()).equals("@done")) {
                 break;
             } else {
@@ -60,7 +60,7 @@ public class TextCompiler {
 
         System.out.print("Filepath for document: ");
         filePaths.add(scanner.nextLine());
-        System.out.print("Filepath for finished image: "); //may have to use println
+        System.out.print("Filepath for finished image: ");
         filePaths.add(scanner.nextLine());
 
         //first element is for the document that needs to be edited
@@ -98,10 +98,17 @@ public class TextCompiler {
     }
 
     public String chooseFont() {
-
-        System.out.println("Choose your font: Pen or Pencil");
-
-        return scanner.nextLine();
+        String s;
+        
+        System.out.print("Choose your font (pen or pencil):");
+        s = scanner.nextLine();
+        
+        while (!(s.matches("pen|pencil|Pencil|Pen"))) {
+            System.out.print("Please try again. Pen or pencil?");
+            s = scanner.nextLine();
+        }
+        
+        return s;
     }
 
     //comprehensive method 
