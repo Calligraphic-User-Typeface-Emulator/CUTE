@@ -32,7 +32,7 @@ public class ImageManager {
     //initializes CHARS arraylist and SPACE arraylist
     public ImageManager() {
 
-        try (Scanner scanner = new Scanner(new File("Characters")).useDelimiter("^");) {
+        try (Scanner scanner = new Scanner(new File("Characters")).useDelimiter("@");) {
 
             while (scanner.hasNextLine()) {
 
@@ -45,11 +45,11 @@ public class ImageManager {
         }
 
         //////// have to distort space as well, then add the distorted spaces into an arraylist /////////
-        try {
+       /* try {
             SPACE = ImageIO.read(new File("space.jpg"));
         } catch (IOException ex) {
             Logger.getLogger(ImageManager.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
 
     }
 
@@ -73,8 +73,8 @@ public class ImageManager {
     }
 
     //make sure the picture is valid for our program
-    public void validify(ArrayList<BufferedImage> images) {
-
+    public boolean validify(ArrayList<BufferedImage> images) {
+        return false;
     }
 
     //split images into individual pictures of characters
@@ -107,7 +107,8 @@ public class ImageManager {
         }
 
         for (int i = 0; i < CHARS.size(); i++) {
-            allImages.put(CHARS.get(i), allSubimages.get(i));
+            allImages.put(CHARS.get(i), 
+                    allSubimages.get(i));
         }
 
         return allImages;
