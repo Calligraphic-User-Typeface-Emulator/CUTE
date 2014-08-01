@@ -80,9 +80,12 @@ public class ImageManager {
     //split images into individual pictures of characters
     public Map<String, ArrayList<BufferedImage>> splitImages(ArrayList<BufferedImage> images) {
         int height, width, x, y;
-        ArrayList<ArrayList<BufferedImage>> allSubimages = new ArrayList<>();
+        ArrayList<ArrayList<BufferedImage>> allSubimages = new ArrayList<>(); //contains arraylist of arraylist of images
         Map<String, ArrayList<BufferedImage>> allImages = new HashMap<>();
-
+        
+        for(int i=0; i < CHARS.size(); i ++){
+            allSubimages.add(new ArrayList<BufferedImage>());
+        }
         for (BufferedImage b : images) {
             x = 0;
             y = 0;
