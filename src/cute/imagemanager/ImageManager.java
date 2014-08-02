@@ -5,6 +5,7 @@
  */
 package cute.imagemanager;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -25,9 +26,10 @@ import javax.imageio.ImageIO;
 public class ImageManager {
 
     public static ArrayList<String> CHARS = new ArrayList<>();
-    public static BufferedImage SPACE = null;   //will be an arraylist
+    private BufferedImage space = null;   //will be an arraylist
 
-    public static int IMAGE_DIVIDER = 100; // thats a place holder
+    private final int imageDivider = 5; // thats a place holder
+    private final Color transparent = new Color(0,0,0,0);
 
     //initializes CHARS arraylist and SPACE arraylist
     public ImageManager() {
@@ -68,7 +70,20 @@ public class ImageManager {
     }
 
     //remove background of big image
+    //assumes picture background is black, user uses different color to write their letters
+    // *NOTE* may be super slow, if so, may use threads 
     public ArrayList<BufferedImage> removeBackground(ArrayList<BufferedImage> images) {
+        images.forEach((b) ->{                  //dat lambda expression tho :3
+            int height = b.getHeight();
+            int width = b.getWidth();
+            for(int i =0; i <height; i++){
+                for(int j =0; j < width; j++){
+                    if(b.getRGB(i,j)==-16777216){ //-16777216 is supposed to be rgb for black
+                        b.setRGB(i,j,transparent.getRGB());
+                    }
+                }
+            }
+        });
         return null;
     }
 
@@ -89,21 +104,21 @@ public class ImageManager {
         for (BufferedImage b : images) {
             x = 0;
             y = 0;
-            height = b.getHeight() / IMAGE_DIVIDER;
-            width = b.getWidth() / IMAGE_DIVIDER;
+            height = b.getHeight() / imageDivider;
+            width = b.getWidth() / imageDivider;
 
             for (ArrayList<BufferedImage> a : allSubimages) {
-                if (x >= b.getHeight() && y >= b.getWidth()) {
+                if (x+width >= b.getWidth() && y+height >= b.getHeight()) {
                     break;
                 }
                 
                 a.add(b.getSubimage(x, y, height, width));      //adds image of each letter to corresponding array part
                 
-                if (x == b.getHeight()) {                       //iterates through height/width 
-                    y += width;
+                if (x +width >= b.getWidth()) {                       //iterates through height/width 
+                    y += height;
                     x = 0;
                 } else {
-                    x += height;
+                    x += width;
                 }
 
             }
