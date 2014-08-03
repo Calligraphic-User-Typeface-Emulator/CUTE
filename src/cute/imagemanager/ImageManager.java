@@ -27,14 +27,13 @@ public class ImageManager {
 
     public static ArrayList<String> CHARS = new ArrayList<>();
     private BufferedImage space = null;   //will be an arraylist
-
     private final int imageDivider = 5; // thats a place holder
-    private final Color transparent = new Color(0,0,0,0);
+    private final Color transparent = new Color(0, 0, 0, 0);
 
     //initializes CHARS arraylist and SPACE arraylist
     public ImageManager() {
 
-        try (Scanner scanner = new Scanner(new File("Characters")).useDelimiter("@");) {
+        try (Scanner scanner = new Scanner(new File("Characters")).useDelimiter(" ");) {
 
             while (scanner.hasNextLine()) {
 
@@ -48,11 +47,10 @@ public class ImageManager {
 
         //////// have to distort space as well, then add the distorted spaces into an arraylist /////////
        /* try {
-            SPACE = ImageIO.read(new File("space.jpg"));
-        } catch (IOException ex) {
-            Logger.getLogger(ImageManager.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
-
+         SPACE = ImageIO.read(new File("space.jpg"));
+         } catch (IOException ex) {
+         Logger.getLogger(ImageManager.class.getName()).log(Level.SEVERE, null, ex);
+         }*/
     }
 
     //takes in user input of sample handwriting
@@ -73,18 +71,24 @@ public class ImageManager {
     //assumes picture background is black, user uses different color to write their letters
     // *NOTE* may be super slow, if so, may use threads 
     public ArrayList<BufferedImage> removeBackground(ArrayList<BufferedImage> images) {
-        images.forEach((b) ->{                  //dat lambda expression tho :3
-            int height = b.getHeight();
-            int width = b.getWidth();
-            for(int i =0; i <height; i++){
-                for(int j =0; j < width; j++){
-                    if(b.getRGB(i,j)==-16777216){ //-16777216 is supposed to be rgb for black
-                        b.setRGB(i,j,transparent.getRGB());
+        int whiteRGB = Color.WHITE.getRGB(), blackRGB = Color.BLACK.getRGB();       
+        ArrayList<BufferedImage> alteredImages = new ArrayList<>();
+        
+        images.forEach((b) -> {                  //dat lambda expression tho :3
+            int height = b.getHeight(), width = b.getWidth();   //apparently lambda expressions can only access FINAL local vars
+            for (int i = 0; i < height; i++) {
+                for (int j = 0; j < width; j++) {
+                    if (b.getRGB(i, j) == blackRGB || b.getRGB(i, j) == whiteRGB) { //makes everything except for user's writng
+                        b.setRGB(i, j, transparent.getRGB());                       //transparent for easier printing
+
                     }
                 }
             }
+            alteredImages.add(b);
+
         });
-        return null;
+
+        return alteredImages;
     }
 
     //make sure the picture is valid for our program
@@ -97,10 +101,12 @@ public class ImageManager {
         int height, width, x, y;
         ArrayList<ArrayList<BufferedImage>> allSubimages = new ArrayList<>(); //contains arraylist of arraylist of images
         Map<String, ArrayList<BufferedImage>> allImages = new HashMap<>();
+
+        for(int i =0; i < CHARS.size(); i++){
+            allSubimages.add(new ArrayList<>());
+        } 
+            
         
-        for(int i=0; i < CHARS.size(); i ++){
-            allSubimages.add(new ArrayList<BufferedImage>());
-        }
         for (BufferedImage b : images) {
             x = 0;
             y = 0;
@@ -108,13 +114,13 @@ public class ImageManager {
             width = b.getWidth() / imageDivider;
 
             for (ArrayList<BufferedImage> a : allSubimages) {
-                if (x+width >= b.getWidth() && y+height >= b.getHeight()) {
+                if (x + width >= b.getWidth() && y + height >= b.getHeight()) {
                     break;
                 }
-                
+
                 a.add(b.getSubimage(x, y, height, width));      //adds image of each letter to corresponding array part
-                
-                if (x +width >= b.getWidth()) {                       //iterates through height/width 
+
+                if (x + width >= b.getWidth()) {                       //iterates through height/width 
                     y += height;
                     x = 0;
                 } else {
@@ -125,7 +131,7 @@ public class ImageManager {
         }
 
         for (int i = 0; i < CHARS.size(); i++) {
-            allImages.put(CHARS.get(i), 
+            allImages.put(CHARS.get(i),
                     allSubimages.get(i));
         }
 
