@@ -29,6 +29,7 @@ public class ImageManager {
     private BufferedImage space = null;   //will be an arraylist
     private final int imageDivider = 5; // thats a place holder
     private final Color transparent = new Color(0, 0, 0, 0);
+    private Map<String, ArrayList<BufferedImage>> images = new HashMap<>();
 
     //initializes CHARS arraylist and SPACE arraylist
     public ImageManager() {
@@ -71,9 +72,9 @@ public class ImageManager {
     //assumes picture background is black, user uses different color to write their letters
     // *NOTE* may be super slow, if so, may use threads 
     public ArrayList<BufferedImage> removeBackground(ArrayList<BufferedImage> images) {
-        int whiteRGB = Color.WHITE.getRGB(), blackRGB = Color.BLACK.getRGB();       
+        int whiteRGB = Color.WHITE.getRGB(), blackRGB = Color.BLACK.getRGB();
         ArrayList<BufferedImage> alteredImages = new ArrayList<>();
-        
+
         images.forEach((b) -> {                  //dat lambda expression tho :3
             int height = b.getHeight(), width = b.getWidth();   //apparently lambda expressions can only access FINAL local vars
             for (int i = 0; i < height; i++) {
@@ -97,28 +98,25 @@ public class ImageManager {
     }
 
     //split images into individual pictures of characters
-    public Map<String, ArrayList<BufferedImage>> splitImages(ArrayList<BufferedImage> images) {
+    public void splitImages(ArrayList<BufferedImage> images) {
         int height, width, x, y;
-        ArrayList<ArrayList<BufferedImage>> allSubimages = new ArrayList<>(); //contains arraylist of arraylist of images
-        Map<String, ArrayList<BufferedImage>> allImages = new HashMap<>();
+        //ArrayList<ArrayList<BufferedImage>> allSubimages = new ArrayList<>(); //contains arraylist of arraylist of images
 
-        for(int i =0; i < CHARS.size(); i++){
-            allSubimages.add(new ArrayList<>());
-        } 
-            
-        
+        CHARS.forEach(s -> {
+            this.images.put(s, new ArrayList<>());
+        });
+
         for (BufferedImage b : images) {
             x = 0;
             y = 0;
             height = b.getHeight() / imageDivider;
             width = b.getWidth() / imageDivider;
 
-            for (ArrayList<BufferedImage> a : allSubimages) {
+            for (String s : CHARS) {
                 if (x + width >= b.getWidth() && y + height >= b.getHeight()) {
                     break;
                 }
-
-                a.add(b.getSubimage(x, y, height, width));      //adds image of each letter to corresponding array part
+                this.images.get(s).add(b.getSubimage(x, y, height, width)); //adds image of each letter to corresponding array part
 
                 if (x + width >= b.getWidth()) {                       //iterates through height/width 
                     y += height;
@@ -130,12 +128,7 @@ public class ImageManager {
             }
         }
 
-        for (int i = 0; i < CHARS.size(); i++) {
-            allImages.put(CHARS.get(i),
-                    allSubimages.get(i));
-        }
-
-        return allImages;
+        
     }
 
     //cut the image so that the individual images are printable
@@ -143,11 +136,17 @@ public class ImageManager {
     public Map<String, ArrayList<BufferedImage>> trim(Map<String, ArrayList<BufferedImage>> images) {
         return null;
     }
+    
+    public Map<String, ArrayList<BufferedImage>> getCharMap(){
+        return this.images;
+    }
+            
 
     //runs everything 
     public Map<String, ArrayList<BufferedImage>> run(ArrayList<String> fileNames) {
         //if (validify)
-        return trim(splitImages(removeBackground(read(fileNames))));
+        splitImages(removeBackground(read(fileNames)));
+        return trim(this.images);
 
     }
 
