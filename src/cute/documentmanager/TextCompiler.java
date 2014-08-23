@@ -5,6 +5,7 @@
  */
 package cute.documentmanager;
 
+import cute.imagemanager.ImageManager;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
@@ -38,47 +39,41 @@ public class TextCompiler {
     //takes in filepaths for sample handwriting 
     public ArrayList<String> initialize() {
         //TODO change to interact with GUI
-        numVariations = 0;
-        ArrayList<String> filePaths = new ArrayList<>();
-        System.out.print("Enter a file path: ");
-        filePaths.add(scanner.nextLine());
-        numVariations++;
-        while (true) {
-            String s;
-            System.out.print("Enter another file path or type \"@done\" to end input: ");
-            if ((s = scanner.nextLine()).equals("@done")) {
-                break;
-            } else {
-                filePaths.add(s);
-                numVariations++;
-            }
-        }
-        return filePaths;
+
+        //make sure to count num pictures
+        /* numVariations = 0;
+         ArrayList<String> filePaths = new ArrayList<>();
+         System.out.print("Enter a file path: ");
+         filePaths.add(scanner.nextLine());
+         numVariations++;
+         while (true) {
+         String s;
+         System.out.print("Enter another file path or type \"@done\" to end input: ");
+         if ((s = scanner.nextLine()).equals("@done")) {
+         break;
+         } else {
+         filePaths.add(s);
+         numVariations++;
+         }
+         }
+         return filePaths;*/
+        return null;
     }
 
-    //gets filepaths for the document that needs to be "edited" and the filepath where the user wants the file
     public ArrayList<String> askFilePaths() {
         //TODO change to interact with GUI
-        ArrayList<String> filePaths = new ArrayList<>();
 
-        System.out.print("Filepath for document: ");
-        filePaths.add(scanner.nextLine());
-        System.out.print("Filepath for finished image: ");
-        filePaths.add(scanner.nextLine());
-
-        //first element is for the document that needs to be edited
-        //second element is for the finished image
-        return filePaths;
+        return null;
     }
 
     //reads file, places IDs of chars needed to print file into arraylist
     public ArrayList<BufferedImage> processFile(Map<String, ArrayList<BufferedImage>> imageMap, String filePath) {
         ArrayList<BufferedImage> images = new ArrayList<>();
         Random random = new Random();
-        int numVariations = this.numVariations - 1, rand = random.nextInt(numVariations);
-        
+        int numVariations = this.numVariations - 1, rand = random.nextInt(numVariations), charNum;
+
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            int charNum = reader.read();
+            charNum = reader.read();
             while (charNum != -1) {
                 if (charNum == 32) { //changes char chosen after every space char
                     rand = random.nextInt(numVariations);
@@ -87,50 +82,45 @@ public class TextCompiler {
                 charNum = reader.read();
             }
         } catch (FileNotFoundException e) {
-
+            //TODO change to relay msg via gui
             System.out.println("Oops. File not found.");
-        } 
-        catch (IOException ex) {
-            Logger.getLogger(TextCompiler.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+
         }
 
         return images;
     }
 
     //writes the images into a specified file
-    public boolean writeFile(String filePath, String font, ArrayList<BufferedImage> images) {
+    public boolean writeFile(String filePath, ArrayList<BufferedImage> images) {
 
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File(filePath)))) {
-        //TODO find out how to change color
+            images.forEach((BufferedImage b) -> {
+                try {
+                    oos.writeObject(b);
+                } catch (IOException e) {
+
+                }
+            });
         } catch (IOException ex) {
-            Logger.getLogger(TextCompiler.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
+
         }
 
-        //write to file here
         return true;
     }
-    
+
     //TODO change to interact with GUI
     public String chooseFont() {
-        String s;
-
-        System.out.print("Choose your font (pen or pencil):");
-        s = scanner.nextLine();
-
-        while (!(s.matches("pen|pencil|Pencil|Pen"))) {
-            System.out.print("Please try again. Pen or pencil?");
-            s = scanner.nextLine();
-        }
-
-        return s;
+       
+        //return black/blue/gray/red
+        return "";
     }
 
     //comprehensive method 
     public boolean write(Map<String, ArrayList<BufferedImage>> imageMap) {
         ArrayList<String> filePaths = askFilePaths();
-        
-        return writeFile(filePaths.get(1), chooseFont(), processFile(imageMap, filePaths.get(0)));
+
+        return writeFile(filePaths.get(1), processFile(imageMap, filePaths.get(0)));
     }
 
 }

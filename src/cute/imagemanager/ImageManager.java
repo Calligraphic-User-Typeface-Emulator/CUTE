@@ -28,7 +28,6 @@ public class ImageManager {
     public static ArrayList<String> CHARS = new ArrayList<>();
     private BufferedImage space = null;   //will be an arraylist
     private final int imageDivider = 5; // thats a place holder
-    private final Color transparent = new Color(0, 0, 0, 0);
     private Map<String, ArrayList<BufferedImage>> images = new HashMap<>();
 
     //initializes CHARS arraylist and SPACE arraylist
@@ -57,39 +56,15 @@ public class ImageManager {
     //takes in user input of sample handwriting
     public ArrayList<BufferedImage> read(ArrayList<String> fileNames) {
         ArrayList<BufferedImage> images = new ArrayList<>();
-        for (String s : fileNames) {
+        fileNames.forEach((s) -> {
             try {
                 images.add(ImageIO.read(new File(s)));
             } catch (IOException ex) {
                 Logger.getLogger(ImageManager.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
-
-        return images;
-    }
-
-    //remove background of big image
-    //assumes picture background is black, user uses different color to write their letters
-    // *NOTE* may be super slow, if so, may use threads 
-    public ArrayList<BufferedImage> removeBackground(ArrayList<BufferedImage> images) {
-        int whiteRGB = Color.WHITE.getRGB(), blackRGB = Color.BLACK.getRGB();
-        ArrayList<BufferedImage> alteredImages = new ArrayList<>();
-
-        images.forEach((b) -> {                  //dat lambda expression tho :3
-            int height = b.getHeight(), width = b.getWidth();   //apparently lambda expressions can only access FINAL local vars
-            for (int i = 0; i < height; i++) {
-                for (int j = 0; j < width; j++) {
-                    if (b.getRGB(i, j) == blackRGB || b.getRGB(i, j) == whiteRGB) { //makes everything except for user's writng
-                        b.setRGB(i, j, transparent.getRGB());                       //transparent for easier printing
-
-                    }
-                }
-            }
-            alteredImages.add(b);
-
         });
 
-        return alteredImages;
+        return images;
     }
 
     //make sure the picture is valid for our program
@@ -128,7 +103,6 @@ public class ImageManager {
             }
         }
 
-        
     }
 
     //cut the image so that the individual images are printable
@@ -136,18 +110,17 @@ public class ImageManager {
     public Map<String, ArrayList<BufferedImage>> trim(Map<String, ArrayList<BufferedImage>> images) {
         return null;
     }
-    
-    public Map<String, ArrayList<BufferedImage>> getCharMap(){
+
+    public Map<String, ArrayList<BufferedImage>> getCharMap() {
         return this.images;
     }
-            
 
     //runs everything 
     public Map<String, ArrayList<BufferedImage>> run(ArrayList<String> fileNames) {
         //if (validify)
-        splitImages(removeBackground(read(fileNames)));
-        return trim(this.images);
-
+//        splitImages(removeBackground(read(fileNames)));
+//        return trim(this.images);
+        return null;
     }
 
 }
