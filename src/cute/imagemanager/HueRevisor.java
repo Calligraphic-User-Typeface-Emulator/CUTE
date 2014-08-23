@@ -11,11 +11,6 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Map;
 
-enum Colors {
-
-    RED, GRAY, BLACK, BLUE
-};
-
 /**
  *
  * @author Forest
@@ -49,15 +44,16 @@ public class HueRevisor {
         return alteredImages;
     }
 
-    public Map<String, ArrayList<BufferedImage>> changeFont(Map<String, ArrayList<BufferedImage>> originalImages, String fontColor) {
+    public Map<String, ArrayList<BufferedImage>> changeFont(Map<String, ArrayList<BufferedImage>> originalImages, Color chosenColor) {
+        int fontColor = chosenColor.getRGB();
         CHARS.forEach(s -> {
             originalImages.get(s).forEach(b -> {
                 int height = b.getHeight(), width = b.getWidth();   //apparently lambda expressions can only access FINAL local vars
                 for (int i = 0; i < height; i++) {
                     for (int j = 0; j < width; j++) {
-                        if (b.getRGB(i, j) != transparent.getRGB()) { //makes everything except for user's writng
-                            //b.setRGB(i, j, transparent.getRGB());                       //transparent for easier printing
-                            //TODO finish this
+                        if (b.getRGB(i, j) != transparent.getRGB()) {
+                            b.setRGB(i, j, fontColor);
+
                         }
                     }
                 }

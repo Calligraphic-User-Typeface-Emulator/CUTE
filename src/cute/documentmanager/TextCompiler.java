@@ -5,7 +5,6 @@
  */
 package cute.documentmanager;
 
-import cute.imagemanager.ImageManager;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
@@ -18,8 +17,6 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -29,7 +26,7 @@ import java.util.logging.Logger;
 public class TextCompiler {
 
     public static int numVariations;
-    public static Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner = new Scanner(System.in);
 
     //placeholder constructor
     public TextCompiler() {
@@ -93,17 +90,19 @@ public class TextCompiler {
 
     //writes the images into a specified file
     public boolean writeFile(String filePath, ArrayList<BufferedImage> images) {
-
+        int i = 0;
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File(filePath)))) {
-            images.forEach((BufferedImage b) -> {
-                try {
-                    oos.writeObject(b);
-                } catch (IOException e) {
+            for (BufferedImage b : images) {
 
+                oos.writeObject(b);
+                if (++i == 45) { //45 is a placeholder for when to newline
+                    oos.writeChars("\n");
+                    i = 0;
                 }
-            });
-        } catch (IOException ex) {
 
+            }
+        } catch (IOException ex) {
+            
         }
 
         return true;
@@ -111,7 +110,7 @@ public class TextCompiler {
 
     //TODO change to interact with GUI
     public String chooseFont() {
-       
+
         //return black/blue/gray/red
         return "";
     }
