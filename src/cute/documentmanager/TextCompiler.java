@@ -5,6 +5,7 @@
  */
 package cute.documentmanager;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
@@ -16,7 +17,6 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
-import java.util.Scanner;
 
 /**
  *
@@ -26,34 +26,12 @@ import java.util.Scanner;
 public class TextCompiler {
 
     public static int numVariations;
-    private final Scanner scanner = new Scanner(System.in);
-
-    //placeholder constructor
-    public TextCompiler() {
-
-    }
 
     //takes in filepaths for sample handwriting 
     public ArrayList<String> initialize() {
         //TODO change to interact with GUI
-
         //make sure to count num pictures
-        /* numVariations = 0;
-         ArrayList<String> filePaths = new ArrayList<>();
-         System.out.print("Enter a file path: ");
-         filePaths.add(scanner.nextLine());
-         numVariations++;
-         while (true) {
-         String s;
-         System.out.print("Enter another file path or type \"@done\" to end input: ");
-         if ((s = scanner.nextLine()).equals("@done")) {
-         break;
-         } else {
-         filePaths.add(s);
-         numVariations++;
-         }
-         }
-         return filePaths;*/
+
         return null;
     }
 
@@ -71,17 +49,14 @@ public class TextCompiler {
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             charNum = reader.read();
-            while (charNum != -1) {
+            while (charNum != -1) {  //to end file reading 
                 if (charNum == 32) { //changes char chosen after every space char
                     rand = random.nextInt(numVariations);
                 }
                 images.add(imageMap.get(Character.toString((char) charNum)).get(rand)); //gets a random character from map
                 charNum = reader.read();
             }
-        } catch (FileNotFoundException e) {
-            //TODO change to relay msg via gui
-            System.out.println("Oops. File not found.");
-        } catch (IOException ex) {
+        } catch (IOException e) {
 
         }
 
@@ -102,17 +77,17 @@ public class TextCompiler {
 
             }
         } catch (IOException ex) {
-            
+
         }
 
         return true;
     }
 
     //TODO change to interact with GUI
-    public String chooseFont() {
+    public Color chooseFont() {
 
         //return black/blue/gray/red
-        return "";
+        return null;
     }
 
     //comprehensive method 
