@@ -7,6 +7,7 @@
 package cute.gui;
 
 import cute.documentmanager.TextCompiler;
+import java.awt.Color;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -203,26 +204,30 @@ public class GUI extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_closeButtonActionPerformed
 
-    private void redRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_redRadioActionPerformed
-        //set image color to red
-    }//GEN-LAST:event_redRadioActionPerformed
-
-    private void blueRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_blueRadioActionPerformed
-        //set image color to blue
-    }//GEN-LAST:event_blueRadioActionPerformed
-
-    private void blackRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_blackRadioActionPerformed
-        //set image color to black
-    }//GEN-LAST:event_blackRadioActionPerformed
-
-    private void grayRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_grayRadioActionPerformed
-        //set image color to gray
-    }//GEN-LAST:event_grayRadioActionPerformed
-
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
         //idk is this supposed to work like this?
         //TextCompiler.initialize();
     }//GEN-LAST:event_okButtonActionPerformed
+
+    private void blackRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_blackRadioActionPerformed
+        //set image color to black
+        TextCompiler.setTextColor(Color.black);
+    }//GEN-LAST:event_blackRadioActionPerformed
+
+    private void grayRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_grayRadioActionPerformed
+        //set image color to gray
+        TextCompiler.setTextColor(Color.gray);
+    }//GEN-LAST:event_grayRadioActionPerformed
+
+    private void blueRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_blueRadioActionPerformed
+        //set image color to blue
+        TextCompiler.setTextColor(Color.blue);
+    }//GEN-LAST:event_blueRadioActionPerformed
+
+    private void redRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_redRadioActionPerformed
+        //set image color to red
+        TextCompiler.setTextColor(Color.red);
+    }//GEN-LAST:event_redRadioActionPerformed
 
     /**
      * @param args the command line arguments
@@ -258,6 +263,7 @@ public class GUI extends javax.swing.JFrame {
             }
         });
     }
+   
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JRadioButton blackRadio;
     private javax.swing.JRadioButton blueRadio;

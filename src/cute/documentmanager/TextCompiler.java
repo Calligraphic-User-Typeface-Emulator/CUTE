@@ -89,7 +89,12 @@ public class TextCompiler {
         //return black/blue/gray/red
         return null;
     }
-
+    //idk if this is what you wanted
+    public static Color setTextColor(Color color) {
+        return color;
+    }
+    
+    
     //comprehensive method 
     public boolean write(Map<String, ArrayList<BufferedImage>> imageMap) {
         ArrayList<String> filePaths = askFilePaths();
