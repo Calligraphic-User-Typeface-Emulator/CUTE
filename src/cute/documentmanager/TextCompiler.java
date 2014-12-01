@@ -84,7 +84,7 @@ public class TextCompiler {
     }
 
     //TODO change to interact with GUI
-    public Color chooseFont() {
+    public Color chooseFontColor() {
 
         //return black/blue/gray/red
         return null;
