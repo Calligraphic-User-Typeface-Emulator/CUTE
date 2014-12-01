@@ -195,6 +195,7 @@ public class GUI extends javax.swing.JFrame {
         int returnVal = fileChooser.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION){
             File file = fileChooser.getSelectedFile();
+            absFile = file.getAbsoluteFile();
             filename.setText(file.getName());
             filename.setEditable(false);
         }
@@ -206,7 +207,8 @@ public class GUI extends javax.swing.JFrame {
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
         //idk is this supposed to work like this?
-        //TextCompiler.initialize();
+        //is processFile supposed to be static?
+        //TextCompiler.processFile(/*Map<String, ArrayList<BufferedImage>> imageMap*/, absFile.getAbsolutePath());
     }//GEN-LAST:event_okButtonActionPerformed
 
     private void blackRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_blackRadioActionPerformed
@@ -263,7 +265,7 @@ public class GUI extends javax.swing.JFrame {
             }
         });
     }
-   
+    public File absFile;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JRadioButton blackRadio;
     private javax.swing.JRadioButton blueRadio;
